@@ -44,7 +44,6 @@ export default function Home() {
         .from("bookmarks")
         .update({ title, url })
         .eq("id", editingId);
-
       toast.success("Bookmark updated");
       setEditingId(null);
     } else {
@@ -53,7 +52,6 @@ export default function Home() {
         url,
         user_id: user.id,
       });
-
       toast.success("Bookmark added");
     }
 
@@ -81,151 +79,142 @@ export default function Home() {
     bookmark.title.toLowerCase().includes(search.toLowerCase())
   );
 
-  const theme = darkMode
-    ? "bg-gray-900 text-white"
-    : "bg-gray-50 text-gray-900";
-
   if (loading)
     return (
-      <div className="flex justify-center items-center h-screen">
+      <div className="flex justify-center items-center h-screen text-white bg-gray-900">
         Loading...
       </div>
     );
 
   return (
-    <div className={`min-h-screen flex justify-center px-4 py-10 ${theme}`}>
-      <Toaster position="top-right" />
+    <div className={`${darkMode ? "dark" : ""}`}>
+      <div className="min-h-screen bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 dark:from-gray-900 dark:via-gray-800 dark:to-black flex justify-center items-center px-4 py-10 transition-all">
 
-      <div className="w-full max-w-2xl bg-white dark:bg-gray-800 dark:text-white rounded-2xl shadow-xl p-8 transition-all">
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-3xl font-bold">
-            🔖 Smart Bookmark App
-          </h1>
+        <Toaster position="top-right" />
 
-          <button
-            onClick={() => setDarkMode(!darkMode)}
-            className="text-sm bg-gray-700 text-white px-4 py-1 rounded-lg"
-          >
-            {darkMode ? "Light Mode" : "Dark Mode"}
-          </button>
-        </div>
+        <div className="w-full max-w-2xl backdrop-blur-xl bg-white/30 dark:bg-gray-800/60 border border-white/20 dark:border-gray-700 rounded-3xl shadow-2xl p-10 text-white dark:text-white transition-all">
 
-        {!user ? (
-          <button
-            onClick={loginWithGoogle}
-            className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg transition"
-          >
-            Login with Google
-          </button>
-        ) : (
-          <>
-            <div className="flex justify-between items-center mb-6">
-              <p>
-                Welcome,{" "}
-                <span className="font-semibold">{user.email}</span>
-              </p>
+          {/* Header */}
+          <div className="flex justify-between items-center mb-10">
+            <h1 className="text-3xl font-extrabold tracking-tight">
+              🚀 Smart Bookmark
+            </h1>
+
+            <button
+              onClick={() => setDarkMode(!darkMode)}
+              className="bg-black/30 hover:bg-black/50 px-4 py-2 rounded-full text-sm backdrop-blur transition"
+            >
+              {darkMode ? "Light Mode" : "Dark Mode"}
+            </button>
+          </div>
+
+          {!user ? (
+            <div className="text-center">
               <button
-                onClick={logout}
-                className="text-sm bg-red-500 hover:bg-red-600 text-white px-4 py-1 rounded-lg transition"
+                onClick={loginWithGoogle}
+                className="bg-white text-gray-800 font-semibold px-8 py-3 rounded-full shadow-lg hover:scale-105 transition-transform"
               >
-                Logout
+                Login with Google
               </button>
             </div>
+          ) : (
+            <>
+              {/* Welcome */}
+              <div className="flex justify-between items-center mb-6">
+                <p className="font-medium">
+                  Welcome,{" "}
+                  <span className="font-bold">{user.email}</span>
+                </p>
 
-            {/* Add / Edit Form */}
-            <div className="space-y-3 mb-6">
+                <button
+                  onClick={logout}
+                  className="bg-red-500 hover:bg-red-600 px-4 py-1 rounded-full text-sm transition"
+                >
+                  Logout
+                </button>
+              </div>
+
+              {/* Add / Edit */}
+              <div className="space-y-4 mb-8">
+                <input
+                  type="text"
+                  placeholder="Bookmark Title"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  className="w-full bg-white/40 dark:bg-gray-700/70 text-white placeholder-gray-200 px-4 py-3 rounded-xl outline-none focus:ring-2 focus:ring-white transition"
+                />
+
+                <input
+                  type="text"
+                  placeholder="Bookmark URL"
+                  value={url}
+                  onChange={(e) => setUrl(e.target.value)}
+                  className="w-full bg-white/40 dark:bg-gray-700/70 text-white placeholder-gray-200 px-4 py-3 rounded-xl outline-none focus:ring-2 focus:ring-white transition"
+                />
+
+                <button
+                  onClick={addOrUpdateBookmark}
+                  className="w-full bg-green-500 hover:bg-green-600 py-3 rounded-xl font-semibold transition-transform hover:scale-105"
+                >
+                  {editingId ? "Update Bookmark" : "Add Bookmark"}
+                </button>
+              </div>
+
+              {/* Search */}
               <input
-  type="text"
-  placeholder="Bookmark Title"
-  value={title}
-  onChange={(e) => setTitle(e.target.value)}
-  className="w-full border border-gray-300 dark:border-gray-600 
-             bg-white dark:bg-gray-700 
-             text-gray-900 dark:text-white
-             rounded-lg px-4 py-2 
-             focus:ring-2 focus:ring-blue-400 outline-none"
-/>
+                type="text"
+                placeholder="Search bookmarks..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="w-full bg-white/40 dark:bg-gray-700/70 text-white placeholder-gray-200 px-4 py-3 rounded-xl mb-6 outline-none focus:ring-2 focus:ring-white transition"
+              />
 
-              <input
-  type="text"
-  placeholder="Bookmark URL"
-  value={url}
-  onChange={(e) => setUrl(e.target.value)}
-  className="w-full border border-gray-300 dark:border-gray-600 
-             bg-white dark:bg-gray-700 
-             text-gray-900 dark:text-white
-             rounded-lg px-4 py-2 
-             focus:ring-2 focus:ring-blue-400 outline-none"
-/>
-
-
-              <button
-                onClick={addOrUpdateBookmark}
-                className="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-lg transition"
-              >
-                {editingId ? "Update Bookmark" : "Add Bookmark"}
-              </button>
-            </div>
-
-            {/* Search */}
-            <input
-  type="text"
-  placeholder="Search bookmarks..."
-  value={search}
-  onChange={(e) => setSearch(e.target.value)}
-  className="w-full border border-gray-300 dark:border-gray-600 
-             bg-white dark:bg-gray-700 
-             text-gray-900 dark:text-white
-             rounded-lg px-4 py-2 mb-6 
-             focus:ring-2 focus:ring-blue-400 outline-none"
-/>
-
-
-            {/* List */}
-            <div className="space-y-3">
-              {filteredBookmarks.length === 0 ? (
-                <p>No bookmarks found.</p>
-              ) : (
-                filteredBookmarks.map((bookmark) => (
-                  <div
-                    key={bookmark.id}
-                    className="flex justify-between items-center bg-gray-100 dark:bg-gray-700 px-4 py-3 rounded-lg"
-                  >
-                    <a
-                      href={bookmark.url}
-                      target="_blank"
-                      className="text-blue-600 hover:underline"
+              {/* List */}
+              <div className="space-y-4">
+                {filteredBookmarks.length === 0 ? (
+                  <p className="text-center text-gray-200">
+                    No bookmarks found.
+                  </p>
+                ) : (
+                  filteredBookmarks.map((bookmark) => (
+                    <div
+                      key={bookmark.id}
+                      className="flex justify-between items-center bg-white/30 dark:bg-gray-700/70 px-5 py-4 rounded-xl backdrop-blur hover:scale-[1.02] transition-transform"
                     >
-                      {bookmark.title}
-                    </a>
-
-                    <div className="flex gap-2">
-                      <button
-                        onClick={() => {
-                          setEditingId(bookmark.id);
-                          setTitle(bookmark.title);
-                          setUrl(bookmark.url);
-                        }}
-                        className="text-sm bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded-md"
+                      <a
+                        href={bookmark.url}
+                        target="_blank"
+                        className="font-medium hover:underline"
                       >
-                        Edit
-                      </button>
+                        {bookmark.title}
+                      </a>
 
-                      <button
-                        onClick={() =>
-                          deleteBookmark(bookmark.id)
-                        }
-                        className="text-sm bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-md"
-                      >
-                        Delete
-                      </button>
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() => {
+                            setEditingId(bookmark.id);
+                            setTitle(bookmark.title);
+                            setUrl(bookmark.url);
+                          }}
+                          className="bg-yellow-500 hover:bg-yellow-600 px-3 py-1 rounded-full text-sm transition"
+                        >
+                          Edit
+                        </button>
+
+                        <button
+                          onClick={() => deleteBookmark(bookmark.id)}
+                          className="bg-red-500 hover:bg-red-600 px-3 py-1 rounded-full text-sm transition"
+                        >
+                          Delete
+                        </button>
+                      </div>
                     </div>
-                  </div>
-                ))
-              )}
-            </div>
-          </>
-        )}
+                  ))
+                )}
+              </div>
+            </>
+          )}
+        </div>
       </div>
     </div>
   );
