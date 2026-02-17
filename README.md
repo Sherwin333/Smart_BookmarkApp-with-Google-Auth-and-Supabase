@@ -6,7 +6,7 @@ A secure, full-stack bookmark manager built with **Next.js**, **Supabase**, and 
 
 ## 🚀 Live Demo
 
-🔗 [https://your-vercel-link.vercel.app](https://your-vercel-link.vercel.app)
+🔗 https://smart-bookmark-app-with-google-auth.vercel.app/
 
 ---
 
