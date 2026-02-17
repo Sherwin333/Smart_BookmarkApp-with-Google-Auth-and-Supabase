@@ -12,9 +12,9 @@ import {
 } from "framer-motion";
 
 // ─── Spring configs ───────────────────────────────────────────────
-const spring = { type: "spring", stiffness: 400, damping: 30 };
-const softSpring = { type: "spring", stiffness: 260, damping: 28 };
-const gentleSpring = { type: "spring", stiffness: 180, damping: 24 };
+const spring    = { type: "spring" as const, stiffness: 400, damping: 30 };
+const softSpring  = { type: "spring" as const, stiffness: 260, damping: 28 };
+const gentleSpring = { type: "spring" as const, stiffness: 180, damping: 24 };
 
 // ─── Reusable variants ────────────────────────────────────────────
 const fadeUp = {
