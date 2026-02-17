@@ -18,15 +18,25 @@ export default function Home() {
     checkUser();
   }, []);
 
+  // ✅ FIXED SESSION HANDLING
   async function checkUser() {
-    const { data } = await supabase.auth.getUser();
-    setUser(data.user);
-    if (data.user) fetchBookmarks(data.user.id);
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    setUser(user);
+
+    if (user) {
+      fetchBookmarks(user.id);
+    }
+
     setLoading(false);
   }
 
   async function loginWithGoogle() {
-    await supabase.auth.signInWithOAuth({ provider: "google" });
+    await supabase.auth.signInWithOAuth({
+      provider: "google",
+    });
   }
 
   async function logout() {
@@ -40,18 +50,30 @@ export default function Home() {
     if (!user || !title || !url) return;
 
     if (editingId) {
-      await supabase
+      const { error } = await supabase
         .from("bookmarks")
         .update({ title, url })
         .eq("id", editingId);
+
+      if (error) {
+        toast.error(error.message);
+        return;
+      }
+
       toast.success("Bookmark updated");
       setEditingId(null);
     } else {
-      await supabase.from("bookmarks").insert({
+      const { error } = await supabase.from("bookmarks").insert({
         title,
         url,
         user_id: user.id,
       });
+
+      if (error) {
+        toast.error(error.message);
+        return;
+      }
+
       toast.success("Bookmark added");
     }
 
@@ -61,16 +83,31 @@ export default function Home() {
   }
 
   async function deleteBookmark(id: string) {
-    await supabase.from("bookmarks").delete().eq("id", id);
+    const { error } = await supabase
+      .from("bookmarks")
+      .delete()
+      .eq("id", id);
+
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+
     toast.success("Bookmark deleted");
+
     if (user) fetchBookmarks(user.id);
   }
 
   async function fetchBookmarks(userId: string) {
-    const { data } = await supabase
+    const { data, error } = await supabase
       .from("bookmarks")
       .select("*")
       .order("created_at", { ascending: false });
+
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
 
     if (data) setBookmarks(data);
   }
