@@ -81,28 +81,28 @@ export default function Home() {
 
   if (loading)
     return (
-      <div className="flex justify-center items-center h-screen text-white bg-gray-900">
+      <div className="flex justify-center items-center h-screen bg-gray-100 dark:bg-gray-900">
         Loading...
       </div>
     );
 
   return (
-    <div className={`${darkMode ? "dark" : ""}`}>
-      <div className="min-h-screen bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 dark:from-gray-900 dark:via-gray-800 dark:to-black flex justify-center items-center px-4 py-10 transition-all">
+    <div className={darkMode ? "dark" : ""}>
+      <div className="min-h-screen flex justify-center items-center px-4 py-10 bg-gray-100 dark:bg-gray-900 transition-colors duration-500">
 
         <Toaster position="top-right" />
 
-        <div className="w-full max-w-2xl backdrop-blur-xl bg-white/30 dark:bg-gray-800/60 border border-white/20 dark:border-gray-700 rounded-3xl shadow-2xl p-10 text-white dark:text-white transition-all">
+        <div className="w-full max-w-2xl bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-3xl shadow-2xl p-10 transition-all duration-500">
 
           {/* Header */}
-          <div className="flex justify-between items-center mb-10">
-            <h1 className="text-3xl font-extrabold tracking-tight">
+          <div className="flex justify-between items-center mb-8">
+            <h1 className="text-3xl font-extrabold">
               🚀 Smart Bookmark
             </h1>
 
             <button
               onClick={() => setDarkMode(!darkMode)}
-              className="bg-black/30 hover:bg-black/50 px-4 py-2 rounded-full text-sm backdrop-blur transition"
+              className="bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white px-4 py-2 rounded-full text-sm transition"
             >
               {darkMode ? "Light Mode" : "Dark Mode"}
             </button>
@@ -112,7 +112,7 @@ export default function Home() {
             <div className="text-center">
               <button
                 onClick={loginWithGoogle}
-                className="bg-white text-gray-800 font-semibold px-8 py-3 rounded-full shadow-lg hover:scale-105 transition-transform"
+                className="bg-blue-500 hover:bg-blue-600 text-white px-8 py-3 rounded-full transition"
               >
                 Login with Google
               </button>
@@ -121,14 +121,14 @@ export default function Home() {
             <>
               {/* Welcome */}
               <div className="flex justify-between items-center mb-6">
-                <p className="font-medium">
+                <p>
                   Welcome,{" "}
-                  <span className="font-bold">{user.email}</span>
+                  <span className="font-semibold">{user.email}</span>
                 </p>
 
                 <button
                   onClick={logout}
-                  className="bg-red-500 hover:bg-red-600 px-4 py-1 rounded-full text-sm transition"
+                  className="bg-red-500 hover:bg-red-600 text-white px-4 py-1 rounded-full text-sm transition"
                 >
                   Logout
                 </button>
@@ -141,7 +141,7 @@ export default function Home() {
                   placeholder="Bookmark Title"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  className="w-full bg-white/40 dark:bg-gray-700/70 text-white placeholder-gray-200 px-4 py-3 rounded-xl outline-none focus:ring-2 focus:ring-white transition"
+                  className="w-full border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 px-4 py-3 rounded-xl outline-none transition"
                 />
 
                 <input
@@ -149,12 +149,12 @@ export default function Home() {
                   placeholder="Bookmark URL"
                   value={url}
                   onChange={(e) => setUrl(e.target.value)}
-                  className="w-full bg-white/40 dark:bg-gray-700/70 text-white placeholder-gray-200 px-4 py-3 rounded-xl outline-none focus:ring-2 focus:ring-white transition"
+                  className="w-full border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 px-4 py-3 rounded-xl outline-none transition"
                 />
 
                 <button
                   onClick={addOrUpdateBookmark}
-                  className="w-full bg-green-500 hover:bg-green-600 py-3 rounded-xl font-semibold transition-transform hover:scale-105"
+                  className="w-full bg-green-500 hover:bg-green-600 text-white py-3 rounded-xl transition"
                 >
                   {editingId ? "Update Bookmark" : "Add Bookmark"}
                 </button>
@@ -166,20 +166,20 @@ export default function Home() {
                 placeholder="Search bookmarks..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="w-full bg-white/40 dark:bg-gray-700/70 text-white placeholder-gray-200 px-4 py-3 rounded-xl mb-6 outline-none focus:ring-2 focus:ring-white transition"
+                className="w-full border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 px-4 py-3 rounded-xl mb-6 outline-none transition"
               />
 
               {/* List */}
               <div className="space-y-4">
                 {filteredBookmarks.length === 0 ? (
-                  <p className="text-center text-gray-200">
+                  <p className="text-center text-gray-500 dark:text-gray-400">
                     No bookmarks found.
                   </p>
                 ) : (
                   filteredBookmarks.map((bookmark) => (
                     <div
                       key={bookmark.id}
-                      className="flex justify-between items-center bg-white/30 dark:bg-gray-700/70 px-5 py-4 rounded-xl backdrop-blur hover:scale-[1.02] transition-transform"
+                      className="flex justify-between items-center bg-gray-200 dark:bg-gray-700 px-5 py-4 rounded-xl transition"
                     >
                       <a
                         href={bookmark.url}
@@ -196,14 +196,14 @@ export default function Home() {
                             setTitle(bookmark.title);
                             setUrl(bookmark.url);
                           }}
-                          className="bg-yellow-500 hover:bg-yellow-600 px-3 py-1 rounded-full text-sm transition"
+                          className="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded-full text-sm"
                         >
                           Edit
                         </button>
 
                         <button
                           onClick={() => deleteBookmark(bookmark.id)}
-                          className="bg-red-500 hover:bg-red-600 px-3 py-1 rounded-full text-sm transition"
+                          className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-full text-sm"
                         >
                           Delete
                         </button>
